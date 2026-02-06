@@ -1,0 +1,24 @@
+name: Simulation Deploy
+
+on:
+  workflow_run:
+    workflows: ["CI Unit Tests", "Terraform Check"] # Espera os passos 1 e 2
+    types:
+      - completed
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }} # Só roda se os outros vencerem
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Executar Script de Deploy
+        run: |
+          chmod +x deploy/deploy.sh
+          ./deploy/deploy.sh
+        env:
+          GITHUB_SHA: ${{ github.sha }}
