@@ -24,4 +24,4 @@ jobs:
         run: pip install pytest
 
       - name: Executar os testes unitários
-        run: pytest
+        run: PYTHONPATH=. pytest
