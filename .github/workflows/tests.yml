@@ -1,0 +1,27 @@
+name: CI Pipeline - Testes Automatizados
+
+# Define quando o pipeline será acionado
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  unit-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Baixar código do repositório
+        uses: actions/checkout@v4
+
+      - name: Configurar o Python no Runner
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Instalar o Pytest
+        run: pip install pytest
+
+      - name: Executar os testes unitários
+        run: pytest
